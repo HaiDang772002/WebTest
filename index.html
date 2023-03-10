@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Facebook API Example</title>
+</head>
+
+<body>
+    <div id="status"></div>
+    <script>
+        window.fbAsyncInit = function () {
+            FB.init({
+                appId: 'YOUR_APP_ID',
+                cookie: true,
+                xfbml: true,
+                version: 'v12.0'
+            });
+
+            FB.getLoginStatus(function (response) {
+                if (response.status === 'connected') {
+                    var accessToken = response.authResponse.accessToken;
+                    var userID = response.authResponse.userID;
+                    var userName = '';
+
+                    FB.api('/me', function (response) {
+                        userName = response.name;
+                        document.getElementById('status').innerHTML = 'Welcome, ' + userName + '!';
+                    });
+                } else {
+                    document.getElementById('status').innerHTML = 'Please log in with Facebook.';
+                }
+            });
+        };
+
+        (function (d, s, id) {
+            var js, fjs = d.getElementsByTagName(s)[0];
+            if (d.getElementById(id)) { return; }
+            js = d.createElement(s); js.id = id;
+            js.src = "https://connect.facebook.net/en_US/sdk.js";
+            fjs.parentNode.insertBefore(js, fjs);
+        }(document, 'script', 'facebook-jssdk'));
+    </script>
+</body>
+
+</html>
